@@ -44,14 +44,16 @@ D --> K[浮点类型&#40float,double&#41]
 ### 4. String 能被继承吗？为什么
 
 > 不可以，因为 String 类有 final 修饰符，而 final 修饰的类是不能被继承的，实现细节不允许改变。平常我们定义的 String st r= ”a”; 其实和 String str=new String(“a”) 还是有差异的。
-> 前者默认调用的是String.valueOf来返回String实例对象，至于调用哪个则取决于你的赋值，比如String num=1,调用的是
+>
+> * 前者默认调用的是String.valueOf来返回String实例对象，至于调用哪个则取决于你的赋值，比如String num=1,调用的是
 >
 > ```java
 > public static String valueOf(int i) {
 > 	return Integer.toString(i);
 > }
 > ```
->后者则是调用如下部分：
+> * 后者则是调用如下部分：
+>
 > ```java
 > public String(String original) {
 > 	this.value = original.value;
@@ -59,7 +61,16 @@ D --> K[浮点类型&#40float,double&#41]
 > }
 > ```
 >
-> 
+> * 最后我们的变量都存储在一个char数组中
+>
+> ```java
+> private final char value[];
+> ```
+
+### 4. String， Stringbuffer， StringBuilder 的区别。
+
+> String 字符串常量(final修饰，不可被继承)，String是常量，当创建之后即不能更改。(可以通过StringBuffer和StringBuilder创建String对象(常用的两个字符串操作类)。)
+> ==StringBuffer 字符串变量（线程安全）,==其也是final类别的，不允许被继承，其中的绝大多数方法都进行了同步处理，包括常用的Append方法也做了同步处理(synchronized修饰)。其自jdk1.0起就已经出现。其toString方法会进行对象缓存，以减少元素复制开销。
 
 ### 4. == 和 equals 的区别是什么？
 
