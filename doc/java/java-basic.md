@@ -43,9 +43,9 @@ D --> K[浮点类型&#40float,double&#41]
 
 ### 4. String 能被继承吗？为什么
 
-> 不可以，因为 String 类有 final 修饰符，而 final 修饰的类是不能被继承的，实现细节不允许改变。平常我们定义的 String st r= ”a”; 其实和 String str=new String(“a”) 还是有差异的。
+> 不可以，因为 String 类有 final 修饰符，而 final 修饰的类是不能被继承的，实现细节不允许改变。平常我们定义的 `String str = ”a”` 其实和 `String str = new String(“a”)` 还是有差异的。
 >
-> * 前者默认调用的是String.valueOf来返回String实例对象，至于调用哪个则取决于你的赋值，比如String num=1,调用的是
+> * 前者默认调用的是String.valueOf来返回String实例对象，至于调用哪个则取决于你的赋值，比如 String num = 1,调用的是
 >
 > ```java
 > public static String valueOf(int i) {
@@ -69,8 +69,111 @@ D --> K[浮点类型&#40float,double&#41]
 
 ### 4. String， Stringbuffer， StringBuilder 的区别。
 
-> String 字符串常量(final修饰，不可被继承)，String是常量，当创建之后即不能更改。(可以通过StringBuffer和StringBuilder创建String对象(常用的两个字符串操作类)。)
-> ==StringBuffer 字符串变量（线程安全）,==其也是final类别的，不允许被继承，其中的绝大多数方法都进行了同步处理，包括常用的Append方法也做了同步处理(synchronized修饰)。其自jdk1.0起就已经出现。其toString方法会进行对象缓存，以减少元素复制开销。
+> * String 字符串常量（final修饰，不可被继承），String是常量，当创建之后即不能更改。(可以通过StringBuffer和StringBuilder创建String对象（常用的两个字符串操作类）。)
+>
+> * StringBuffer 字符串变量（线程安全），其也是final类别的，不允许被继承，其中的绝大多数方法都进行了同步处理，包括常用的Append方法也做了同步处理（synchronized修饰）。其自 jdk1.0 起就已经出现。其toString方法会进行对象缓存，以减少元素复制开销。
+>
+> ```java
+> public synchronized String toString() {
+> 	if (toStringCache == null) {
+> 		toStringCache = Arrays.copyOfRange(value, 0, count);
+> 	}
+> 	return new String(toStringCache, true);
+> }
+> ```
+>
+> * StringBuilder 字符串变量（非线程安全）==其自jdk1.5起开始出现。与StringBuffer一样都继承和实现了同样的接口和类，方法除了没使用synch修饰以外基本一致，不同之处在于最后toString的时候，会直接返回一个新对象。
+>
+> ```java
+> public String toString() {
+> 	// Create a copy, don’t share the array
+> 	return new String(value, 0, count);
+> }
+> ```
+>
+> ---
+>
+> 1. 可变与不可变
+>
+>    * String 类中使用字符数组保存字符串，如下就是，因为有“final”修饰符，所以可以知道 string 对象是不可变的。`private final char value[];`
+>
+>    * StringBuilder 与 StringBuffer 都继承自AbstractStringBuilder类，在 AbstractStringBuilder 中也是使用字符数组保存字符串，如下就是，可知这两种对象都是可变的。`char[] value;`
+>
+> 2. 是否多线程安全
+>
+>    * String中的对象是不可变的，也就可以理解为常量，显然线程安全。
+>
+>    * AbstractStringBuilder 是 StringBuilder 与 StringBuffer 的公共父类，定义了一些字符串的基本操作，如 expandCapacity、append、insert、indexOf 等公共方法。
+>
+>    * StringBuffer对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。看如下源码：
+>
+>    ```java
+>    public synchronized StringBuffer reverse() {
+>        super.reverse();
+>        return this;
+>    }
+>    
+>    public int indexOf(String str) {
+>    	//存在 public synchronized int indexOf(String str, int fromIndex) 方法
+>        return indexOf(str, 0);
+>    }
+>    ```
+>
+>    * StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。
+>
+> 3. StringBuilder 与 StringBuffer 共同点
+>
+>    * StringBuilder 与StringBuffer 有公共父类 AbstractStringBuilder（抽象类）。
+>    * 抽象类与接口的其中一个区别是：抽象类中可以定义一些子类的公共方法，子类只需要增加新的功能，不需要重复写已经存在的方法；而接口中只是对方法的申明和常量的定义。
+>    * StringBuilder、StringBuffer 的方法都会调用 AbstractStringBuilder 中的公共方法，如super.append(...)。只是 StringBuffer 会在方法上加 synchronized 关键字，进行同步。
+>
+> 4. 最后，如果程序不是多线程的，那么使用 StringBuilder 效率高于 StringBuffer。
+
+### 5. ArrayList 和 LinkedList 有什么区别。
+
+​	ArrayList和LinkedList都实现了List接口，有以下的不同点：
+
+	1. ArrayList是基于索引的数据接口，它的底层是数组。它可以以O(1)时间复杂度对元素进行随机访问。与此对应，LinkedList是以元素列表的形式存储它的数据，每一个元素都和它的前一个和后一个元素链接在一起，在这种情况下，查找某个元素的时间复杂度是O(n)。
+ 	2. 相对于ArrayList，LinkedList的插入，添加，删除操作速度更快，因为当元素被添加到集合任意位置的时候，不需要像数组那样重新计算大小或者是更新索引。
+ 	3. LinkedList比ArrayList更占内存，因为LinkedList为每一个节点存储了两个引用，一个指向前一个元素，一个指向下一个元素。
+
+### 6. 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当 new 的时候， 他们的执行顺序。
+
+此题考察的是类加载器实例化时进行的操作步骤（加载–>连接->初始化）。
+
+父类静态变量、
+父类静态代码块、
+子类静态变量、
+子类静态代码块、
+父类非静态变量（父类实例成员变量）、
+父类构造函数、
+子类非静态变量（子类实例成员变量）、
+子类构造函数。
+
+### 7. 用过哪些 Map 类，都有什么区别，HashMap 是线程安全的吗,并发下使用的 Map 是什么，他们内部原理分别是什么，比如存储方式， hashcode，扩容， 默认容量等。
+
+### 8. 有没有有顺序的 Map 实现类， 如果有， 他们是怎么保证有序的。
+
+### 9. 抽象类和接口的区别，类可以继承多个类么，接口可以继承多个接口么,类可以实现多个接口么。
+
+### 10. 继承和聚合的区别在哪。
+
+------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### 4. == 和 equals 的区别是什么？
 
