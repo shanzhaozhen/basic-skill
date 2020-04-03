@@ -234,11 +234,14 @@ D --> K[浮点类型&#40float,double&#41]
 
 > 1. **什么是JAVA的反射机制？**
 >
->    Java反射是Java被视为动态（或准动态）语言的一个关键性质。这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并可于运行时改变fields内容或唤起methods。
+>    * Java反射是Java被视为动态（或准动态）语言的一个关键性质。这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并可于运行时改变fields内容或唤起methods。
 >
->    Java反射机制容许程序在运行时加载、探知、使用编译期间完全未知的classes。
+>      Java反射机制容许程序在运行时加载、探知、使用编译期间完全未知的classes。
 >
->    换言之，Java可以加载一个运行时才得知名称的class，获得其完整结构。
+>      换言之，Java可以加载一个运行时才得知名称的class，获得其完整结构。
+>
+>    * 反射机制能够实现**在运行时对类进行装载**，因此能增加程序的灵活性，但是不恰当地使用反射机制，也会严重影响系统的性能。具体而言，反射机制提供的功能主要有：得到一个对象所属的类；获取一个类的所有成员变量和方法；在运行时创建对象；在运行时调用对象的方法。
+>       可以配合[JVM加载class文件的原理机制](https://www.jianshu.com/p/cdfdeffc8d34)来理解
 >
 > 2. 
 
