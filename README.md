@@ -5,8 +5,10 @@
 
 ## 目录
 
-* [Java基础](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/java/java-basic.md)
+* [Java基础](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/java.md)
 * [Spring](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/java/spring.md)
+* [数据结构](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/java/spring.md)
+* [算法](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/algorithm.md)
 
 
 
