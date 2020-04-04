@@ -3,7 +3,7 @@
 ### 1.  单位换算
 
 + bit(位)：0,1
-+ byte(字节)：1byte = 8bit
++ [Java基础](doc/java.md)
 + word(字)：1word = 2byte
 + 1KB = 1024bytes
 
@@ -540,7 +540,7 @@ C --> E[RuntimeException]
 >  1. 当前方法知道如何处理该异常，则用try...catch块来处理该异常。
 >  2. 当前方法不知道如何处理，则在定义该方法是声明抛出该异常。
 >
->  我们比较熟悉的Checked异常有：
+>   我们比较熟悉的Checked异常有：
 >
 >  * Java.lang.ClassNotFoundException
 >  * Java.lang.NoSuchMetodException
@@ -548,7 +548,21 @@ C --> E[RuntimeException]
 >
 >* **RuntimeException**： Runtime如除数是0和数组下标越界等，其产生频繁，处理麻烦，若显示申明或者捕获将会对程序的可读性和运行效率影响很大。所以由系统自动检测并将它们交给缺省的异常处理程序。当然如果你有处理要求也可以显示捕获它们。
 >
+>  我们比较熟悉的RumtimeException子类：
+>
+>  * Java.lang.ArithmeticException
+>  * Java.lang.ArrayStoreExcetpion
+>  * Java.lang.ClassCastException
+>  * Java.lang.IndexOutOfBoundsException
+>  * Java.lang.NullPointerException
+>
 >**Error**
+>
+>当程序发生不可控的错误时，通常做法是通知用户并中止程序的执行。与异常不同的是Error及其子类的对象不应被抛出。
+>
+>Error是throwable的子类，代表编译时间和系统错误，用于指示合理的应用程序不应该试图捕获的严重问题。
+>
+>Error由Java虚拟机生成并抛出，包括动态链接失败，虚拟机错误等。程序对其不做处理。
 
 
 
