@@ -344,7 +344,7 @@ D --> K[浮点类型&#40float,double&#41]
 >
 > 				1. 单例类只能有一个实例。
 >    				2. 单例类必须自己创建自己的唯一实例。
->             				3. 单例类必须给所有其他对象提供这一实例。
+>                         				3. 单例类必须给所有其他对象提供这一实例。
 >
 > 
 >
@@ -532,9 +532,21 @@ C --> E[RuntimeException]
 >
 >
 >**Exception**
->		一般分为Checked异常和Runtime异常，所有RuntimeException类及其子类的实例被称为Runtime异常，不属于该范畴的异常则被称为CheckedException。
 >
->​		**CheckedException**
+>一般分为Checked异常和Runtime异常，所有RuntimeException类及其子类的实例被称为Runtime异常，不属于该范畴的异常则被称为CheckedException。
+>
+>* **CheckedException**：只有java语言提供了Checked异常，Java认为Checked异常都是可以被处理的异常，所以Java程序必须显示处理Checked异常。如果程序没有处理Checked异常，该程序在编译时就会发生错误无法编译。这体现了Java的设计哲学：没有完善错误处理的代码根本没有机会被执行。对Checked异常处理方法有两种：
+>
+>  1. 当前方法知道如何处理该异常，则用try...catch块来处理该异常。
+>  2. 当前方法不知道如何处理，则在定义该方法是声明抛出该异常。
+>
+>  我们比较熟悉的Checked异常有：
+>
+>  * Java.lang.ClassNotFoundException
+>  * Java.lang.NoSuchMetodException
+>  * java.io.IOException
+>
+>* **RuntimeException**： Runtime如除数是0和数组下标越界等，其产生频繁，处理麻烦，若显示申明或者捕获将会对程序的可读性和运行效率影响很大。所以由系统自动检测并将它们交给缺省的异常处理程序。当然如果你有处理要求也可以显示捕获它们。
 >
 >**Error**
 
