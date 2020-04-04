@@ -344,7 +344,7 @@ D --> K[浮点类型&#40float,double&#41]
 >
 > 				1. 单例类只能有一个实例。
 >    				2. 单例类必须自己创建自己的唯一实例。
->       				3. 单例类必须给所有其他对象提供这一实例。
+>             				3. 单例类必须给所有其他对象提供这一实例。
 >
 > 
 >
@@ -528,6 +528,15 @@ C --> E[RuntimeException]
 >* java.lang.Throwable是所有异常的根
 >* java.lang.Error是错误信息
 >* java.lang.Exception是异常信息
+>
+>
+>
+>**Exception**
+>		一般分为Checked异常和Runtime异常，所有RuntimeException类及其子类的实例被称为Runtime异常，不属于该范畴的异常则被称为CheckedException。
+>
+>​		**CheckedException**
+>
+>**Error**
 
 
 
