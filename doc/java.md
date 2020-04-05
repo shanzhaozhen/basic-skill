@@ -213,7 +213,7 @@ D --> K[浮点类型&#40float,double&#41]
 > 5. **聚合**：是关联关系的一种特例，他体现的是整体与部分、拥有的关系，即has-a的关系，此时整体与部分之间是可分离的，他们可以具有各自的生命周期，部分可以属于多个整体对象，也可以为多个整体对象共享；比如计算机与CPU、公司与员工的关系等；表现在代码层面，和关联关系是一致的，只能从语义级别来区分。
 > 6. **组合 (a拥有b，a没了b也就没了，实心)**：组合也是关联关系的一种特例，他体现的是一种contains-a的关系，这种关系比聚合更强，也称为强聚合；他同样体现整体与部分间的关系，但此时整体与部分是不可分的，整体的生命周期结束也就意味着部分的生命周期结束；比如你和你的大脑；表现在代码层面，和关联关系是一致的，只能从语义级别来区分。
 
-### 13. 讲讲你理解的 NIO 和 NIO 的区别是啥，谈谈 reactor 模型。
+### 13. 讲讲你理解的 BIO 和 NIO 的区别是啥，谈谈 reactor 模型。
 
 > IO(BIO)是面向流的，NIO是面向缓冲区的
 >
@@ -230,6 +230,37 @@ D --> K[浮点类型&#40float,double&#41]
 > |   无   |  选择器  |
 >
 > [Java NIO与BIO](https://www.jianshu.com/p/3f703d3d804c)
+>
+> ---
+>
+> |                    | 同步阻塞IO |  伪异步IO  |     NIO      |     AIO      |
+> | :----------------: | :--------: | :--------: | :----------: | :----------: |
+> | 客户端数目：IO线程 |    1:1     |    m:n     |     m:1      |     m:0      |
+> |       IO模型       | 同步阻塞IO | 同步阻塞IO | 同步非阻塞IO | 异步非阻塞IO |
+> |       吞吐量       |     低     |     中     |      高      |      高      |
+> |     编程复杂度     |    简单    |    简单    |   非常复杂   |     复制     |
+>
+> **Reactor是什么？**
+>
+> 		1. 事件驱动
+>   		2. 可以处理一个或多个输入源
+>                 		3. 通过Service Handle同步的将输入事件采用多路复用分发给相应的Request Handler(一个或多个）处理
+>
+> ```mermaid
+> graph LR
+> A[request] --> B[reactor]
+> C[request] --> B[reactor]
+> D[request] --> B[reactor]
+> E[request] --> B[reactor]
+> B[reactor] --> F[request]
+> B[reactor] --> G[request]
+> B[reactor] --> H[request]
+> B[reactor] --> I[request]
+> B[reactor] --> J[request]
+> B[reactor] --> K[request]
+> ```
+>
+> 
 
 ### 14. 反射的原理，反射创建类实例的三种方式是什么？
 
@@ -275,25 +306,40 @@ D --> K[浮点类型&#40float,double&#41]
 >       说明：仅适合在编译前就已经明确要操作的 Class
 >
 >    3. 使用类对象的 getClass() 方法。
+>
+> ```java
+> // 创建Class对象的方式一：(对象.getClass())，获取类中的字节码文件
+> Class class1 = p1.getClass();
+> 
+> // 创建Class对象的方式二：(类.class:需要输入一个明确的类，任意一个类型都有一个静态的class属性)
+> Class class3 = Person.class;
+> 
+> // 创建Class对象的方式三：(forName():传入时只需要以字符串的方式传入即可)
+> // 通过Class类的一个forName（String className)静态方法返回一个Class对象，className必须是全路径名称；
+> // Class.forName()有异常：ClassNotFoundException
+> Class   class4 = Class.forName("Person");
+> ```
+>
+> 
 
 ### 15. 反射中，Class.forName 和 ClassLoader 区别。
 
 >  在Java中，类装载器把一个类装入Java虚拟机中，要经过三个步骤来完成：装载、链接和初始化，其中链接又可以分成校验、准备和解析三步，除了解析外，其它步骤是严格按照顺序完成的，各个步骤的主要工作如下：
 >
-> 	1. 装载：查找和导入类或接口的二进制数据； 
->  	2. 链接：执行下面的校验、准备和解析步骤，其中解析步骤是可以选择的； 
->  	3. 校验：检查导入类或接口的二进制数据的正确性； 
->  	4. 准备：给类的静态变量分配并初始化存储空间； 
->  	5. 解析：将符号引用转成直接引用； 
->  	6. 初始化：激活类的静态变量的初始化Java代码和静态Java代码块。
+>   	1. 装载：查找和导入类或接口的二进制数据； 
+>   	2. 链接：执行下面的校验、准备和解析步骤，其中解析步骤是可以选择的； 
+>   	3. 校验：检查导入类或接口的二进制数据的正确性； 
+>   	4. 准备：给类的静态变量分配并初始化存储空间； 
+>   	5. 解析：将符号引用转成直接引用； 
+>   	6. 初始化：激活类的静态变量的初始化Java代码和静态Java代码块。
 >
-> *  Class.forName(className)方法，其实调用的方法是Class.forName(className,true,classloader);注意看第2个boolean参数，它表示的意思，在loadClass后必须初始化。比较下我们前面准备jvm加载类的知识，我们可以清晰的看到在执行过此方法后，目标对象的 static块代码已经被执行，static参数也已经被初始化。
-> * 再看ClassLoader.loadClass(className)方法，其实他调用的方法是ClassLoader.loadClass(className,false);还是注意看第2个 boolean参数，该参数表示目标对象被装载后不进行链接，这就意味这不会去执行该类静态块中间的内容。因此2者的区别就显而易见了。
+>  *  Class.forName(className)方法，其实调用的方法是Class.forName(className,true,classloader);注意看第2个boolean参数，它表示的意思，在loadClass后必须初始化。比较下我们前面准备jvm加载类的知识，我们可以清晰的看到在执行过此方法后，目标对象的 static块代码已经被执行，static参数也已经被初始化。
+>  * 再看ClassLoader.loadClass(className)方法，其实他调用的方法是ClassLoader.loadClass(className,false);还是注意看第2个 boolean参数，该参数表示目标对象被装载后不进行链接，这就意味这不会去执行该类静态块中间的内容。因此2者的区别就显而易见了。
 >
 >  最后还有必要在此提一下new方法和newInstance方法的区别：
 >
-> 	* newInstance：弱类型。低效率。只能调用无参构造。
-> 	* new：强类型。相对高效。能调用任何public构造。
+>  	* newInstance：弱类型。低效率。只能调用无参构造。
+>  	* new：强类型。相对高效。能调用任何public构造。
 
 ### 16. 描述动态代理的几种实现方式，分别说出相应的优缺点。
 
@@ -317,8 +363,9 @@ D --> K[浮点类型&#40float,double&#41]
 >
 > **区别**
 >
-> 	* JDK动态代理只能对实现了接口的类生成代理，而不能针对类
-> 	* CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法 因为是继承，所以该类或方法不要声明成final
+> * JDK动态代理只能对实现了接口的类生成代理，而不能针对类
+>
+> * CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法 因为是继承，所以该类或方法不要声明成final
 >
 > **问题：为什么 CGlib 方式可以对接口实现代理。**
 >
@@ -342,9 +389,9 @@ D --> K[浮点类型&#40float,double&#41]
 >
 > 注意：
 >
-> 				1. 单例类只能有一个实例。
->    				2. 单例类必须自己创建自己的唯一实例。
->                         				3. 单例类必须给所有其他对象提供这一实例。
+> 	1. 单例类只能有一个实例。
+>  	2. 单例类必须自己创建自己的唯一实例。
+>  	3. 单例类必须给所有其他对象提供这一实例。
 >
 > 
 >
@@ -453,6 +500,8 @@ D --> K[浮点类型&#40float,double&#41]
 
 > 同时复写hashcode和equals方法，优势可以添加自定义逻辑，且不必调用超类的实现。
 >
+> 相似问题：说一说你对 java.lang.Object 对象中 hashCode 和 equals 方法的理解。在什么场景下需要重新实现这两个方法
+>
 > [equals和hashCode解析](https://www.iteye.com/blog/java-min-1416727)
 
 ### 20. 请结合 OO 设计理念，谈谈访问修饰符 public、private、protected、default 在应用设计中的作用。
@@ -487,8 +536,8 @@ D --> K[浮点类型&#40float,double&#41]
 >
 > **内存存储区别**
 >
-> 	* 数组从栈中分配空间，对于程序员方便快速，但自由度小。
-> 	* 链表从堆中分配空间，自由度大但申请管理比较麻烦。
+> * 数组从栈中分配空间，对于程序员方便快速，但自由度小。
+> * 链表从堆中分配空间，自由度大但申请管理比较麻烦。
 >
 > **逻辑结构区别**
 >
@@ -540,21 +589,21 @@ C --> E[RuntimeException]
 >  1. 当前方法知道如何处理该异常，则用try...catch块来处理该异常。
 >  2. 当前方法不知道如何处理，则在定义该方法是声明抛出该异常。
 >
->   我们比较熟悉的Checked异常有：
+>    我们比较熟悉的Checked异常有：
 >
->  * Java.lang.ClassNotFoundException
->  * Java.lang.NoSuchMetodException
->  * java.io.IOException
+>   * Java.lang.ClassNotFoundException
+>   * Java.lang.NoSuchMetodException
+>   * java.io.IOException
 >
 >* **RuntimeException**： Runtime如除数是0和数组下标越界等，其产生频繁，处理麻烦，若显示申明或者捕获将会对程序的可读性和运行效率影响很大。所以由系统自动检测并将它们交给缺省的异常处理程序。当然如果你有处理要求也可以显示捕获它们。
 >
 >  我们比较熟悉的RumtimeException子类：
 >
->  * Java.lang.ArithmeticException
->  * Java.lang.ArrayStoreExcetpion
->  * Java.lang.ClassCastException
->  * Java.lang.IndexOutOfBoundsException
->  * Java.lang.NullPointerException
+>   * Java.lang.ArithmeticException
+>   * Java.lang.ArrayStoreExcetpion
+>   * Java.lang.ClassCastException
+>   * Java.lang.IndexOutOfBoundsException
+>   * Java.lang.NullPointerException
 >
 >**Error**
 >
@@ -563,58 +612,269 @@ C --> E[RuntimeException]
 >Error是throwable的子类，代表编译时间和系统错误，用于指示合理的应用程序不应该试图捕获的严重问题。
 >
 >Error由Java虚拟机生成并抛出，包括动态链接失败，虚拟机错误等。程序对其不做处理。
+>
+>
+>
+>[Java异常分类](https://blog.csdn.net/woshixuye/article/details/8230407)
+
+### 24. 在自己的代码中，如果创建一个 java.lang.String 对象，这个对象是否可以被类加载器加载？为什么
+
+> 类加载无须等到“首次使用该类”时加载，jvm允许预加载某些类。
+>
+> [java加载机制整理](https://www.cnblogs.com/jasonstorm/p/5663864.html)
+>
+> ---
+>
+> 类加载使用的是双亲委派模型，当你想要加载一个类的时候，必须先给你的父加载器，它再去想办法加载，如果它不能加载，再告诉我们，我们自己想办法。所以，在java中java.lang.String肯定在上层的ClassLoader被加载过了，所以你自己写的完全没有机会加载。如果可以加载的话，那么我们可以把所有java自带的类全部重写用我们自己的，这样大家使用就没有一些约定好的类，不知道要怎么办才好。
+
+### 25. 在 jdk1.5 中，引入了泛型，泛型的存在是用来解决什么问题。
+
+> 泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数，泛型的好处是在编译的时候检查类型安全，并且所有的强制转换都是自动和隐式的，以提高代码的重用率。
+>
+> ---
+>
+> 泛型的本质是参数化类型，这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。
+> 在 Java SE 1.5 之前没有泛型的情况的下只能通过对类型 Object 的引用来实现参数的任意化，其带来的缺点是要做显式强制类型转换，而这种强制转换编译期是不做检查的，容易把问题留到运行时，所以 泛型的好处是在编译时检查类型安全，并且所有的强制转换都是自动和隐式的，提高了代码的重用率，避免在运行时出现 ClassCastException。
+
+### 26. 这样的 a.hashcode() 有什么用，与 a.equals(b)有什么关系。
+
+> **hashcode**
+> hashcode（）方法提供了对象的hashCode值，是一个native方法，返回的默认值与System.identityHashCode(obj)一致。通常这个值是对象头部的一部分二进制位组成的数字，具有一定的标识对象的意义存在，但绝不定于地址。作用是：用一个数字来标识对象。比如在HashMap、HashSet等类似的集合类中，如果用某个对象本身作为Key，即要基于这个对象实现Hash的写入和查找，那么对象本身如何实现这个呢？就是基于hashcode这样一个数字来完成的，只有数字才能完成计算和对比操作。
+>
+> **hashcode是否唯一**
+> hashcode只能说是标识对象，在hash算法中可以将对象相对离散开，这样就可以在查找数据的时候根据这个key快速缩小数据的范围，但hashcode不一定是唯一的，所以hash算法中定位到具体的链表后，需要循环链表，然后通过equals方法来对比Key是否是一样的。
+>
+> **equals与hashcode的关系**
+> equals相等两个对象，则hashcode一定要相等。但是hashcode相等的两个对象不一定equals相等。
+
+### 27. 有没有可能 2 个不相等的对象有相同的 hashcode。
+
+> 有，实例:
+>
+> ```java
+> String str1 = "通话";
+> String str2 = "重地";
+> System.out.println(String.format("str1：%d | str2：%d", str1.hashCode(),str2.hashCode()));
+> System.out.println(str1.equals(str2));
+> 
+> // 执行结果:
+> // str1：1179395 | str2：1179395
+> // false
+> ```
+
+### 28. Java 中的 HashSet 内部是如何工作的。
+
+> **底层是基于hashmap实现的**
+>
+> HashSet 实际上是一个HashMap实例，都是一个存放链表的数组。它不保证存储元素的迭代顺序；此类允许使用null元素。HashSet 中不允许有重复元素，这是因为 HashSet 是基于HashMap实现的，HashSet 中的元素都存放在 HashMap 的 key 上面，而value中的值都是统一的一个固定对象 private static final Object PRESENT = new Object();
+>
+> HashSet 中 add 方法调用的是底层 HashMap 中的put()方法，而如果是在 HashMap 中调用put，首先会判断key是否存在，如果key存在则修改 value 值，如果key不存在这插入这个 key-value。而在set中，因为value 值没有用，也就不存在修改 value 值的说法，因此往 HashSet 中添加元素，首先判断元素（也就是key）是否存在，如果不存在这插入，如果存在着不插入，这样 HashSet 中就不存在重复值。
+>
+>  所以判断key是否存在就要重写元素的类的 equals() 和 hashCode() 方法，当向Set中添加对象时，首先调用此对象所在类的 hashCode() 方法，计算次对象的哈希值，此哈希值决定了此对象在 Set 中存放的位置；若此位置没有被存储对象则直接存储，若已有对象则通过对象所在类的 equals() 比较两个对象是否相同，相同则不能被添加。
+
+### 29. 什么是序列化，怎么序列化，为什么序列化，反序列化会遇到什么问题，如何解决。
+
+> **序列化 (Serialization)**：是将对象的状态信息转换为可以存储或传输的形式的过程。在序列化期间，对象将其当前状态写入到临时或持久性存储区。以后，可以通过从存储区中读取或反序列化对象的状态，重新创建该对象。
+>
+> 序列化使其他代码可以查看或修改，那些不序列化便无法访问的对象实例数据。确切地说，代码执行序列化需要特殊的权限：即指定了 SerializationFormatter 标志的 SecurityPermission。在默认策略下，通过 Internet 下载的代码或 Internet 代码不会授予该权限；只有本地计算机上的代码才被授予该权限。
+>
+> 通常，对象实例的所有字段都会被序列化，这意味着数据会被表示为实例的序列化数据。这样，能够解释该格式的代码有可能能够确定这些数据的值，而不依赖于该成员的可访问性。类似地，反序列化从序列化的表示形式中提取数据，并直接设置对象状态，这也与可访问性规则无关。
+>
+> 对于任何可能包含重要的安全性数据的对象，如果可能，应该使该对象不可序列化。如果它必须为可序列化的，请尝试生成特定字段来保存不可序列化的重要数据。如果无法实现这一点，则应注意该数据会被公开给任何拥有序列化权限的代码，并确保不让任何恶意代码获得该权限。
+>
+> **什么情况下会用到序列化？**
+>
+> 1. 当你想把内存中的对象写入到硬盘时
+> 2. 当你想用套接字在网络上传输对象时
+> 3. 当你想通过RMI调用对象时
+>    （**RMI是什么东西？**）：RMI总结来说就是远程调用对象，在一个jvm上调用另一个jvm的对象。
+>
+> **序列化需要注意的事项**
+>
+> 1. 序列化只保存对象的状态，而不管对象的方法。
+> 2. 当一个父类实现了序列化，它的子类也自动实现序列化，不用显示进行实现了。
+> 3. 当一个实例对象引用其他对象，当序列化该对象时也把引用的对象进行了实例化。
+
+### 30. == 和 equals 的区别是什么？
+
+> **== 解读**
+>
+> 对于基本类型和引用类型 == 的作用效果是不同的，如下所示：
+>
+> + 基本类型：比较的是值是否相同；
+> + 引用类型：比较的是引用是否相同；
+>
+> 代码示例：
+>
+> ```java
+> String x = "string";
+> String y = "string";
+> String z = new String("string");
+> System.out.println(x == y); // true
+> System.out.println(x == z); // false
+> System.out.println(x.equals(y)); // true
+> System.out.println(x.equals(z)); // true
+> ```
+>
+> 代码解读：因为 x 和 y 指向的是同一个引用，所以 == 也是 true，而 new String()方法则重写开辟了内存空间，所以 == 结果为 false，而 equals 比较的一直是值，所以结果都为 true。
+>
+> **equals 解读**
+> equals 本质上就是 ==，只不过 String 和 Integer 等重写了 equals 方法，把它变成了值比较。看下面的代码就明白了。
+> 首先来看默认情况下 equals 比较一个(有相同值的对象)，代码如下：
+>
+> ```java
+> public class Cat {
+>     private  String name;
+>     
+> 	public Cat(String name){
+>         this.name = name;
+>     }
+>     
+> 	public String getName() {
+>         return name;
+>     }
+>     
+> 	public void setName(String name) {
+>         this.name = name;
+>     }
+>     
+> 	public static void main(String[] args) {
+> 		Cat c1 = new Cat("cat1");//c1是Cat的实例化对象,c2同理
+>         Cat c2 = new Cat("cat2");
+>        	String s1 = new String("隔壁老王");
+>         String s2 = new String("隔壁老王");
+> 		System.out.println(c1.equals(c2));	//false,equals在比较的类对象的时候比较的是引用
+>         System.out.println(s1.equals(s2));	//true,而在比较string的时候,因为重写了equals方法,和基本数据类型一样,比较的是值,所以为true
+> }
+> ```
+>
+> **总结**
+>
+> == 对于基本类型来说是值比较(不难理解,八种基本数据类型是可以有确定值的)，对于引用类型来说是比较的是引用(数组、类、接口没有确定值)；而 equals 默认情况下是引用比较，只是很多类重新了 equals 方法，比如 String、Integer 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。
+
+### 31. java 中的 Math.round(-1.5) 等于多少？
+
+> 等于 -1，
+>
+> 因为在数轴上取值时，中间值（0.5）向右取整，所以正 0.5 是往上取整，负 0.5 是直接舍弃。同理, Math.round(1.5) = 2
+
+### 32.写一个字符串反转函数。
+
+> ```java
+> // StringBuffer reverse
+> StringBuffer stringBuffer = new StringBuffer();
+> stringBuffer.append("abcdefg");
+> System.out.println(stringBuffer.reverse()); // gfedcba
+> // StringBuilder reverse
+> StringBuilder stringBuilder = new StringBuilder();
+> stringBuilder.append("abcdefg");
+> System.out.println(stringBuilder.reverse()); // gfedcba
+> ```
+
+### 33. String 类的常用方法都有那些？
+
+> * indexOf()：返回指定字符的索引。
+> * charAt()：返回指定索引处的字符。
+> * replace()：字符串替换。
+> * trim()：去除字符串两端空白。
+> * split()：分割字符串，返回一个分割后的字符串数组。
+> * getBytes()：返回字符串的 byte 类型数组。
+> * length()：返回字符串长度。
+> * toLowerCase()：将字符串转成小写字母。
+> * toUpperCase()：将字符串转成大写字符。
+> * substring()：截取字符串。
+> * equals()：字符串比较。
+
+### 34. 抽象类必须要有抽象方法吗？
+
+> 不需要，抽象类不一定非要有抽象方法。
+>
+> ```java
+> public abstract class noAbstractMethod{
+>     
+>     public static void main(String[] args) {
+>         sayHi();
+>     }
+>     
+>     public static void sayHi() {
+>         System.out.println("hi~");
+>     }
+>     
+> }
+> // 结果:hi~
+> ```
+
+### 35. java 中 IO 流分为几种？
+
+> 按功能来分：**输入流（input）**、**输出流（output）**。
+>
+> 按类型来分：**字节流 **和 **字符流**。
+>
+> **字节流** 和 **字符流** 的区别是：字节流按 8 位传输以字节为单位输入输出数据，字符流按 16 位传输以字符为单位输入输出数据。
+
+### 36. Files的常用方法都有哪些？
+
+> * Files.exists()：检测文件路径是否存在。
+> * Files.createFile()：创建文件。
+> * Files.createDirectory()：创建文件夹。
+> * Files.delete()：删除一个文件或目录。
+> * Files.copy()：复制文件。
+> * Files.move()：移动文件。
+> * Files.size()：查看文件个数。
+> * Files.read()：读取文件。
+> * Files.write()：写入文件。
+
+### 37. List、Set、Map 之间的区别是什么？
+
+> |    比较    |                           List                            |                            Set                             |                             Map                              |
+> | :--------: | :-------------------------------------------------------: | :--------------------------------------------------------: | :----------------------------------------------------------: |
+> |  集成接口  |                        Collection                         |                         Collection                         |                                                              |
+> | 常见实现类 | AbstractList（其常用子类有ArrayList、LinkedList、Vector） | AbstractSet（其常用子类有HastSet、LinkedHastSet、TreeSet） |                      HashMap、HashTable                      |
+> |  常见方法  |    add()、remove()、clear()、get()、contains()、size()    |        add()、remove()、clear()、contains()、size()        | put()、get()、remove()、clear()、containsKey()、containsValue()、keySet()、values()、size() |
+> |    元素    |                          可重复                           |                 不可重复（用equals()判断）                 |                           不可重复                           |
+> |    顺序    |                           有序                            |                无序（实际上由HashCode决定）                |                                                              |
+> |  线程安全  |                      Vector线程安全                       |                                                            |                      HashTable线程安全                       |
+
+### 38. 如何实现数组和 List 之间的转换？
+
+> * List转换成为数组：调用ArrayList的toArray方法。
+> * 数组转换成为List：调用Arrays的asList方法。
+
+### 39. ArrayList 和 Vector 的区别是什么？
+
+> * **Vector** 是同步的，而 **ArrayList** 不是。然而，如果你寻求在迭代的时候对列表进行改变，你应该使用CopyOnWriteArrayList。
+> * **ArrayList** 比 **Vector** 快，它是异步，不会过载。
+> * **ArrayList** 更加通用，因为我们可以使用Collections工具类轻易地获取同步列表和只读列表。
+
+### 40. Array 和 ArrayList 有何区别？
+
+> * **Array** 可以容纳基本类型和对象，而 **ArrayList** 只能容纳对象。
+> * **Array** 是指定大小的，而 **ArrayList** 大小是固定的。
+> * **Array** 没有提供ArrayList那么多功能，比如 **addAll()**、**removeAll()** 和 **iterator()**等。
+
+### 41. 在 Queue 中 poll()和 remove()有什么区别？
+
+> * **Vector**：就比arraylist多了个同步化机制（线程安全），因为效率较低，现在已经不太建议使用。在web应用中，特别是前台页面，往往效率（页面响应速度）是优先考虑的。
+> * **Statck**：堆栈类，先进后出。
+> * **HashTable**：就比 **HashMap** 多了个同步化机制（线程安全）。
+> * **Enumeration**：枚举，相当于迭代器。
+
+### 42. 迭代器 Iterator 是什么？
+
+> **迭代器** 是一种设计模式，它是一个对象，它可以遍历并选择序列中的对象，而开发人员不需要了解该序列的底层结构。迭代器通常被称为“轻量级”对象，因为创建它的代价小。
+
+### 43. Iterator 怎么使用？有什么特点？
+
+> Java中的 **Iterator** 功能比较简单，并且只能单向移动：
+>
+> 1. 使用方法 **iterator()** 要求容器返回一个 **Iterator**。第一次调用 **Iterator** 的 **next()** 方法时，它返回序列的第一个元素。注意：**iterator()** 方法是 **java.lang.Iterable** 接口,公共基类 **Collection** 提供 **iterator()** 方法。
+> 2. 使用 **next()** 获得序列中的下一个元素。
+> 3. 使用 **hasNext()** 检查序列中是否还有元素。
+> 4. 使用 **remove()** 将迭代器新返回的元素删除。
+>
+> **Iterator** 是 Java 迭代器最简单的实现，为 List 设计的 **ListIterator** 具有更多的功能，它可以从两个方向遍历List，也可以从 List 中插入和删除元素。
 
 
 
 
-
-
-
-
-
-
-
-### 7. List、Set、Map 之间的区别是什么？
-
-### 
-
-------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 4. == 和 equals 的区别是什么？
-
-+ == 解读
-
-  对于基本类型和引用类型 == 的作用效果是不同的，如下所示：
-
-  + 基本类型：比较的是值是否相同；
-  + 引用类型：比较的是引用是否相同；
-
-代码示例：
-
-```java
-String x = "string";
-String y = "string";
-String z = new String("string");
-System.out.println(x == y); // true
-System.out.println(x == z); // false
-System.out.println(x.equals(y)); // true
-System.out.println(x.equals(z)); // true
-```
-
-代码解读：因为 x 和 y 指向的是同一个引用，所以 == 也是 true，而 new String()方法则重写开辟了内存空间，所以 == 结果为 false，而 equals 比较的一直是值，所以结果都为 true。
 
