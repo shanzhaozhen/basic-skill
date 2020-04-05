@@ -874,7 +874,47 @@ C --> E[RuntimeException]
 >
 > **Iterator** 是 Java 迭代器最简单的实现，为 List 设计的 **ListIterator** 具有更多的功能，它可以从两个方向遍历List，也可以从 List 中插入和删除元素。
 
+### 44. Iterator 和 ListIterator 有什么区别？
 
+> * **Iterator** 可用来遍历 Set 和 List 集合，但是 **ListIterator** 只能用来遍历 List，见名知意，Set 并不能使用 **ListIterator**
+> * **Iterator** 对集合只能是前向遍历，**ListIterator** 既可以前向也可以后向。
+> * **ListIterator**实现了 **Iterator** 接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。
 
+### 45. synchronized 和 volatile 的区别是什么？
 
+> * **volatile** 本质是在告诉 jvm 当前变量在寄存器（工作内存）中的值是不确定的，需要从主存中读取；**synchronized** 则是锁定当前变量，只有当前线程可以访问该变量，其他线程被阻塞住。
+> * **volatile** 仅能使用在变量级别；**synchronized** 则可以使用在变量、方法、和类级别的。
+> * **volatile** 仅能实现变量的修改可见性，不能保证原子性；而 **synchronized** 则可以保证变量的修改可见性和原子性。
+> * **volatile** 不会造成线程的阻塞；**synchronized** 可能会造成线程的阻塞。
+> * **volatile** 标记的变量不会被编译器优化；**synchronized** 标记的变量可以被编译器优化。
+
+### 46. 给定一个文本,获取某字符串出现的次数
+
+```java
+ public static void count(){
+     File file = new File("C:\\test.txt");
+     InputStream is = null;
+     try {
+         is = new FileInputStream(file);
+     } catch (FileNotFoundException e) {
+         e.printStackTrace();
+     }
+     byte[] b = new byte[1024];
+     int a = 0;
+     try {
+         a = is.read(b);
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+     String[] str = new String(b, 0, a).split("");
+     int count = 0;
+     for(int i = 0;i<str.length;i++){
+         if("(某字符)".equals(str[i])){
+             count++;
+         }
+     }
+     System.out.println(count);
+     
+ }
+```
 
