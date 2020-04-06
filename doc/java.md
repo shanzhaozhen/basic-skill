@@ -3,7 +3,7 @@
 ### 1.  单位换算
 
 + bit(位)：0,1
-+ [Java基础](doc/java.md)
++ byte(字节)：1byte = 8bit
 + word(字)：1word = 2byte
 + 1KB = 1024bytes
 
