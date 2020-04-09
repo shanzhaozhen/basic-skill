@@ -10,12 +10,15 @@
 * [Tomcat](doc/tomcat.md)
 * [Spring](doc/spring.md)
 * [多线程](doc/multi-threading.md)
-* [数据结构](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/java/data-structure.md)
-* [算法](https://github.com/shanzhaozhen/Basic-Skill/blob/master/doc/algorithm.md)
+* [计算机网络](doc/network.md)
+* [架构设计](doc/framework-design.md)
+* [数据结构与算法](doc/algorithm.md)
+* [数据库](doc/database.md)
 
 
 
 <h2 id="source">出处</h2>
 
 + [2020JAVA面试题附答案(持续更新版)](https://blog.csdn.net/weixin_43495390/article/details/86533482)
++ [笔试面试知识整理](https://hit-alibaba.github.io/interview/)
 
