@@ -207,11 +207,36 @@ D --> K[浮点类型&#40float,double&#41]
 ### 12. 继承、实现、依赖、关联、聚合、组合的联系与区别
 
 > 1. **继承**：指的是一个类（称为子类、子接口）继承另外的一个类（称为父类、父接口）的功能，并可以增加它自己的新功能的能力，继承是类与类或者接口与接口之间最常见的关系；在 Java 中此类关系通过关键字extends明确标识，在设计时一般没有争议性。
+>
+>    ![Generalization](../static/java/Generalization.jpg)
+>
 > 2. **实现**：指的是一个 class 类实现 interface 接口（可以是多个）的功能；实现是类与接口之间最常见的关系；在 Java 中此类关系通过关键字 implements 明确标识，在设计时一般没有争议性；
+>
+>    ![Generalization](../static/java/Realization.jpg)
+>
 > 3. **依赖**：可以简单的理解，就是一个类A使用到了另一个类B，而这种使用关系是具有偶然性的、临时性的、非常弱的，但是B类的变化会影响到A；比如某人要过河，需要借用一条船，此时人与船之间的关系就是依赖；表现在代码层面，为类B作为参数被类A在某个 method 方法中使用。
+>
+>    ![Generalization](../static/java/Dependence.jpg)
+>
 > 4. **关联**：他体现的是两个类、或者类与接口之间语义级别的一种强依赖关系，比如我和我的朋友；这种关系比依赖更强、不存在依赖关系的偶然性、关系也不是临时性的，一般是长期性的，而且双方的关系一般是平等的、关联可以是单向、双向的；表现在代码层面，为被关联类B以类属性的形式出现在关联类A中，也可能是关联类A引用了一个类型为被关联类B的全局变量。
+>
+>    ![Generalization](../static/java/Association.jpg)
+>
 > 5. **聚合**：是关联关系的一种特例，他体现的是整体与部分、拥有的关系，即has-a的关系，此时整体与部分之间是可分离的，他们可以具有各自的生命周期，部分可以属于多个整体对象，也可以为多个整体对象共享；比如计算机与CPU、公司与员工的关系等；表现在代码层面，和关联关系是一致的，只能从语义级别来区分。
+>
+>    ![Generalization](../static/java/Aggregation.jpg)
+>
 > 6. **组合 (a拥有b，a没了b也就没了，实心)**：组合也是关联关系的一种特例，他体现的是一种contains-a的关系，这种关系比聚合更强，也称为强聚合；他同样体现整体与部分间的关系，但此时整体与部分是不可分的，整体的生命周期结束也就意味着部分的生命周期结束；比如你和你的大脑；表现在代码层面，和关联关系是一致的，只能从语义级别来区分。
+>
+>    ![Generalization](../static/java/Composition.jpg)
+>
+> **聚合关系图：**
+>
+> ![Generalization](../static/java/聚合关系图.jpg)
+>
+> **组合关系图：**
+>
+> ![Generalization](../static/java/组合关系图.jpg)
 
 ### 13. 讲讲你理解的 BIO 和 NIO 的区别是啥，谈谈 reactor 模型。
 
@@ -238,7 +263,7 @@ D --> K[浮点类型&#40float,double&#41]
 > | 客户端数目：IO线程 |    1:1     |    m:n     |     m:1      |     m:0      |
 > |       IO模型       | 同步阻塞IO | 同步阻塞IO | 同步非阻塞IO | 异步非阻塞IO |
 > |       吞吐量       |     低     |     中     |      高      |      高      |
-> |     编程复杂度     |    简单    |    简单    |   非常复杂   |     复制     |
+> |     编程复杂度     |    简单    |    简单    |   非常复杂   |     复杂     |
 >
 > **Reactor是什么？**
 >
@@ -266,7 +291,7 @@ D --> K[浮点类型&#40float,double&#41]
 
 > 1. **什么是JAVA的反射机制？**
 >
->    * Java反射是Java被视为动态（或准动态）语言的一个关键性质。这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并可于运行时改变fields内容或唤起methods。
+>    * Java反射是Java被视为动态（或准动态）语言的一个关键性质。这个机制允许程序在运行时透过Reflection APIs 取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并可于运行时改变fields内容或唤起methods。
 >
 >      Java反射机制容许程序在运行时加载、探知、使用编译期间完全未知的classes。
 >
