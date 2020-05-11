@@ -7,16 +7,23 @@
 
 ## 目录
 
-* [Java基础](doc/java.md)
-* [JVM](doc/jvm.md)
-* [Tomcat](doc/tomcat.md)
-* [Spring](doc/spring.md)
-* [多线程](doc/multi-threading.md)
-* [计算机网络](doc/network.md)
-* [架构设计](doc/framework-design.md)
-* [数据结构与算法](doc/algorithm.md)
-* [数据库](doc/database.md)
+[1. Java基础](doc/java.md)
 
+[2. JVM](doc/jvm.md)
+
+[3. 多线程](doc/multi-threading.md)
+
+[4. Spring](doc/spring.md)
+
+[4. Tomcat](doc/tomcat.md)
+
+[6. 计算机网络](doc/network.md)
+
+[7. 架构设计](doc/framework-design.md)
+
+[8. 数据结构与算法](doc/algorithm.md)
+
+[9. 数据库](doc/database.md)
 
 
 <h2 id="source">出处</h2>
