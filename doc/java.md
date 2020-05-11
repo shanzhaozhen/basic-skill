@@ -27,10 +27,10 @@ D --> K[浮点类型&#40float,double&#41]
 | :------: | :-------------------: | :----------------------------------------------------------: |
 | boolean  |       1字节/8位       |                         true, false                          |
 |   byte   |  1字节/8位有符号整数  |                         -128 ~ +127                          |
-|  short   | 2字节/16位有符号整数  |    -32768（-2<sup15</sup） ~ +32767(+2<sup15</sup-1)     |
-|   int    | 4字节/32位有符号整数  | -2147483648（-2<sup31</sup） ~ +2147483647(2<sup31</sup-1) |
-|   long   | 8字节/64位有符号整数  |              -2<sup63</sup~ +2<sup63</sup              |
-|   char   | 2字节/16位Unicode字符 |                0 ~ 65535（2<sup16</sup-1 ）                |
+|  short   | 2字节/16位有符号整数  |    -32768（-2<sup>15</sup>） ~ +32767(+2<sup>15</sup>-1)     |
+|   int    | 4字节/32位有符号整数  | -2147483648（-2<sup>31</sup>） ~ +2147483647(2<sup>31</sup>-1) |
+|   long   | 8字节/64位有符号整数  |               -2<sup>63</sup>~ +2<sup>63</sup>               |
+|   char   | 2字节/16位Unicode字符 |                0 ~ 65535（2<sup>16</sup>-1 ）                |
 |  float   |   4字节/32位浮点数    |                     ±1.4E-45 ~ ±3.4E+38                      |
 |  double  |   8字节/64位浮点数    |                    ±4.9E-324 ~ ±1.7E+308                     |
 
@@ -41,7 +41,21 @@ D --> K[浮点类型&#40float,double&#41]
 
 具体来说 JDK 其实包含了 JRE，同时还包含了编译 java 源码的编译器 javac，还包含了很多 java 程序调试和分析的工具。简单来说：如果你需要运行 java 程序，只需安装 JRE 就可以了，如果你需要编写 java 程序，需要安装 JDK。
 
-### 1.4 String 能被继承吗？为什么
+### 1.4 作用域 public，private，protected，以及不写时的区别
+
+1. public：可以被其他所有类访问
+2. protected：可以被自身，子类，以及同一包下的类访问。
+3. default：可以被自身和同一包中的类访问。
+4. private：只可以被自身访问。
+
+|  作用域   | 类内部 | 本包 | 子类 | 外部包 |
+| :-------: | :----: | :--: | :--: | :----: |
+|  public   |   √    |  √   |  √   |   √    |
+| protected |   √    |  √   |  √   |   ×    |
+|  default  |   √    |  √   |  ×   |   ×    |
+|  private  |   √    |  ×   |  ×   |   ×    |
+
+### 1.5 String 能被继承吗？为什么
 
 不可以，因为 String 类有 final 修饰符，而 final 修饰的类是不能被继承的，实现细节不允许改变。平常我们定义的 `String str = ”a”` 其实和 `String str = new String(“a”)` 还是有差异的。
 
@@ -68,7 +82,7 @@ this.hash = original.hash;
 private final char value[];
 ```
 
-### 1.5 String， Stringbuffer， StringBuilder 的区别。
+### 1.6 String， Stringbuffer， StringBuilder 的区别。
 
 * String 字符串常量（final修饰，不可被继承），String是常量，当创建之后即不能更改。(可以通过StringBuffer和StringBuilder创建String对象（常用的两个字符串操作类）。)
 
@@ -130,7 +144,7 @@ return indexOf(str, 0);
 
 4. 最后，如果程序不是多线程的，那么使用 StringBuilder 效率高于 StringBuffer。
 
-### 1.5 ArrayList 和 LinkedList 有什么区别。
+### 1.7 ArrayList 和 LinkedList 有什么区别。
 
 ​	ArrayList和LinkedList都实现了List接口，有以下的不同点：
 
@@ -138,7 +152,20 @@ return indexOf(str, 0);
 2.  相对于ArrayList，LinkedList的插入，添加，删除操作速度更快，因为当元素被添加到集合任意位置的时候，不需要像数组那样重新计算大小或者是更新索引。
 3.  LinkedList比ArrayList更占内存，因为LinkedList为每一个节点存储了两个引用，一个指向前一个元素，一个指向下一个元素。
 
-### 1.6 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当 new 的时候， 他们的执行顺序。
+### 1.8 ArrayList 和 Vector 的区别，HashMap 和 Hashtable 的区别 
+
+就 ArrayList 与 Vector 主要从二方面来说：
+
+1. 同步性：Vector是线程安全的，也就是说是同步的，而ArrayList是线程序不安全的，不是同步的
+2. 数据增长：当需要增长时，Vector 默认增长为原来一倍，而ArrayList却是原来的一半
+
+就 HashMap 与HashTable主要从三方面来说： 
+
+1. 历史原因：Hashtable 是基于陈旧的 Dictionary 类的，HashMap 是Java 1.2引进的 Map 接口的一个实现
+2. 同步性：Hashtable 是线程安全的，也就是说是同步的，而 HashMap 是线程序不安全的，不是同步的
+3. 值：只有 HashMap 可以让你将空值作为一个表的条目的 key 或 value 
+
+### 1.8 讲讲类的实例化顺序，比如父类静态数据，构造函数，字段，子类静态数据，构造函数，字段，当 new 的时候， 他们的执行顺序。
 
 **此题考察的是类加载器实例化时进行的操作步骤（加载–连接-初始化）。**
 
@@ -181,8 +208,6 @@ return indexOf(str, 0);
 
 * hashMap是线程不安全的，HashMap是数组 + 链表 + 红黑树（JDK1.8增加了红黑树部分）实现的，采用哈希表来存储的。
 * HashTable、ConcurrentHashMap 
-
-
 
 ### 1.10 有没有有顺序的 Map 实现类， 如果有， 他们是怎么保证有序的。
 
