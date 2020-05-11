@@ -23,9 +23,11 @@
 
 [8. Tomcat](doc/tomcat.md)
 
-[9. Spring](doc/spring.md)
+[9. MyBatis](doc/mybatis.md)
 
-[10. MyBatis](doc/mybatis.md)
+[10. Spring](doc/spring.md)
+
+[11. SpringMVC](doc/spring-mvc.md)
 
 
 <h2 id="source">出处</h2>
