@@ -1,6 +1,6 @@
-## 5. Tomcat
+## 8. Tomcat
 
-### 5.1 简单讲讲 tomcat 结构，以及其类加载器流程。
+### 8.1 简单讲讲 tomcat 结构，以及其类加载器流程。
 
 Server: 多个service
 Container级别的：–> engine –> host –> context
@@ -46,7 +46,7 @@ B --> A
 
 [Tomcat体系结构及执行流程](https://www.jianshu.com/p/62ec977996df)
 
-### 5.2 tomcat 如何调优，涉及哪些参数。
+### 8.2 tomcat 如何调优，涉及哪些参数。
 
 硬件上选择，操作系统选择，版本选择，jdk选择，配置jvm参数，配置connector的线程数量，开启gzip压缩，trimSpaces，集群等
 

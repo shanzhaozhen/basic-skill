@@ -1,6 +1,6 @@
-## 6. 计算机网络
+## 4. 计算机网络
 
-### 6.1 HTTP1.0 和 HTTP1.1 有什么区别。
+### 4.1 HTTP1.0 和 HTTP1.1 有什么区别。
 
 HTTP 1.0主要有以下几点变化：
 * 请求和相应可以由于多行首部字段构成
@@ -30,7 +30,7 @@ HTTP 1.0主要有以下几点变化：
 * CONNECT HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。
 * OPTIONS 允许客户端查看服务器的性能。 TRACE 回显服务器收到的请求，主要用于测试或诊断。
 
-### 6.2 TCP 三次握手和四次挥手的流程，为什么断开连接要 4 次，如果握手只有两次，会出现什么。
+### 4.2 TCP 三次握手和四次挥手的流程，为什么断开连接要 4 次，如果握手只有两次，会出现什么。
 
 **三次握手流程**:
 
@@ -72,12 +72,12 @@ HTTP 1.0主要有以下几点变化：
 
 [TCP 协议](https://hit-alibaba.github.io/interview/basic/network/TCP.html)
 
-### 6.3 TIME_WAIT 和 CLOSE_WAIT 的区别。
+### 4.3 TIME_WAIT 和 CLOSE_WAIT 的区别。
 
 * TIME_WAIT状态就是用来重发可能丢失的ACK报文。
 * TIME_WAIT 表示主动关闭，CLOSE_WAIT 表示被动关闭。
 
-### 6.4 说说你知道的几种 HTTP 响应码，比如 200, 302, 404。
+### 4.4 说说你知道的几种 HTTP 响应码，比如 200, 302, 404。
 
 * 1xx：信息，请求收到，继续处理
 * 2xx：成功，行为被成功地接受、理解和采纳
@@ -90,11 +90,11 @@ HTTP 1.0主要有以下几点变化：
 
 [Http响应码及其含义--摘自apache官网](https://my.oschina.net/gavinjin/blog/42856)
 
-### 6.5 当你用浏览器打开一个链接的时候，计算机做了哪些工作步骤。
+### 4.5 当你用浏览器打开一个链接的时候，计算机做了哪些工作步骤。
 
 **DNS解析** –**端口分析** –**TCP请求** –**服务器处理请求** –**服务器响应** –**浏览器解析** —**链接关闭**
 
-### 6.6 TCP/IP 如何保证可靠性，说说 TCP 头的结构。
+### 4.6 TCP/IP 如何保证可靠性，说说 TCP 头的结构。
 
 * 使用序号，对收到的TCP报文段进行排序以及检测重复的数据；
 * 使用校验和来检测报文段的错误；
@@ -128,7 +128,7 @@ tcp_hdr;
 
 [TCP/IP协议头部结构体（网摘小结）](https://www.cnblogs.com/lancidie/archive/2013/05/16/3082378.html)
 
-### 6.7 如何避免浏览器缓存。
+### 4.7 如何避免浏览器缓存。
 
 * 无法被浏览器缓存的请求：
 HTTP信息头中包含Cache-Control:no-cache，pragma:no-cache，或Cache-Control:max-age=0等告诉浏览器不用缓存的请求。需要根据Cookie，认证信息等决定输入内容的动态请求是不能被缓存的，经过HTTPS安全加密的请求（有人也经过测试发现，ie其实在头部加入Cache-Control：max-age信息，firefox在头部加入Cache-Control:Public之后，能够对HTTPS的资源进行缓存，参考《HTTPS的七个误解》）
@@ -137,7 +137,7 @@ HTTP响应头中不包含Last-Modified/Etag，也不包含Cache-Control/Expires�
 
 [【Web 缓存机制系列】2 – Web 浏览器的缓存机制](http://www.alloyteam.com/2012/03/web-cache-2-browser-cache/)
 
-### 6.8 简述 Http 请求 get 和 post 的区别以及数据包格式。
+### 4.8 简述 Http 请求 get 和 post 的区别以及数据包格式。
 
 |                  | GET                                                          | POST                                                         |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -153,11 +153,11 @@ HTTP响应头中不包含Last-Modified/Etag，也不包含Cache-Control/Expires�
 
 [HTTP 方法：GET 对比 POST](https://www.w3school.com.cn/tags/html_ref_httpmethods.asp)
 
-### 6.9 简述 HTTP 请求的报文格式。
+### 4.9 简述 HTTP 请求的报文格式。
 
 [HTTP的报文格式、GET和POST格式解释](http://www.360doc.com/content/12/0612/14/8093902_217673378.shtml)
 
-### 6.10 HTTPS 的加密方式是什么，讲讲整个加密解密流程。
+### 4.10 HTTPS 的加密方式是什么，讲讲整个加密解密流程。
 
 加密方式是tls/ssl，底层是通过对称算法，非对称，hash算法实现
 

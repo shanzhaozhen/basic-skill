@@ -13,17 +13,19 @@
 
 [3. 多线程](doc/multi-threading.md)
 
-[4. Spring](doc/spring.md)
+[4. 计算机网络](doc/network.md)
 
-[4. Tomcat](doc/tomcat.md)
+[5. 架构设计](doc/framework-design.md)
 
-[6. 计算机网络](doc/network.md)
+[6. 数据结构与算法](doc/algorithm.md)
 
-[7. 架构设计](doc/framework-design.md)
+[7. 数据库](doc/database.md)
 
-[8. 数据结构与算法](doc/algorithm.md)
+[8. Tomcat](doc/tomcat.md)
 
-[9. 数据库](doc/database.md)
+[9. Spring](doc/spring.md)
+
+[10. MyBatis](doc/mybatis.md)
 
 
 <h2 id="source">出处</h2>
