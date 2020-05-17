@@ -6,7 +6,7 @@
 
 ### 9.2 讲下MyBatis的缓存
 
-答：MyBatis的缓存分为一级缓存和二级缓存,一级缓存放在session里面,默认就有,二级缓存放在它的命名空间里,默认是不打开的,使用二级缓存属性类需要实现Serializable序列化接口(可用来保存对象的状态),可在它的映射文件中配置<cache/>
+答：MyBatis的缓存分为一级缓存和二级缓存,一级缓存放在session里面,默认就有,二级缓存放在它的命名空间里,默认是不打开的,使用二级缓存属性类需要实现Serializable序列化接口(可用来保存对象的状态),可在它的映射文件中配置`<cache/>`
 
 ### 9.3 Mybatis是如何进行分页的？分页插件的原理是什么？
 
@@ -120,7 +120,10 @@ MyBatis里面的动态Sql一般是通过if节点来实现,通过OGNL语法来实
 
 ### 9.26 Mybatis都有哪些Executor执行器？它们之间的区别是什么？
 
-Mybatis有三种基本的Executor执行器，SimpleExecutor ReuseExecutor BatchExecutor。1）SimpleExecutor：每执行一次update或select，就开启一个Statement对象，用完立刻关闭Statement对象。2）ReuseExecutor：执行update或select，以sql作为key查找Statement对象，存在就使用，不存在就创建，用完后，不关闭Statement对象，而是放置于Map3）BatchExecutor：完成批处理。
+Mybatis有三种基本的Executor执行器，SimpleExecutor ReuseExecutor BatchExecutor。
+
+1. SimpleExecutor：每执行一次update或select，就开启一个Statement对象，用完立刻关闭Statement对象。
+2. ReuseExecutor：执行update或select，以sql作为key查找Statement对象，存在就使用，不存在就创建，用完后，不关闭Statement对象，而是放置于Map3）BatchExecutor：完成批处理。
 
 ### 9.27 Mybatis中如何指定使用哪一种Executor执行器？
 
@@ -153,9 +156,8 @@ Mybatis有三种基本的Executor执行器，SimpleExecutor ReuseExecutor BatchE
 
 ### 9.34 Mybatis比IBatis比较大的几个改进是什么？
 
-1）有接口绑定,包括注解绑定sql和xml绑定Sql 
-
-2）动态sql由原来的节点配置变成OGNL表达式3） 在一对一,一对多的时候引进了association,在一对多的时候引入了collection节点,不过都是在resultMap里面配置
+1. 有接口绑定,包括注解绑定sql和xml绑定Sql 
+2. 动态sql由原来的节点配置变成OGNL表达式3） 在一对一,一对多的时候引进了association,在一对多的时候引入了collection节点,不过都是在resultMap里面配置
 
 ### 9.35 IBatis和MyBatis在核心处理类分别叫什么？
 

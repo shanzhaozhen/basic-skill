@@ -124,13 +124,13 @@ return new String(value, 0, count);
 
 ```java
 public synchronized StringBuffer reverse() {
-super.reverse();
-return this;
+    super.reverse();
+    return this;
 }
 
 public int indexOf(String str) {
-//存在 public synchronized int indexOf(String str, int fromIndex) 方法
-return indexOf(str, 0);
+    //存在 public synchronized int indexOf(String str, int fromIndex) 方法
+    return indexOf(str, 0);
 }
 ```
 
@@ -456,16 +456,16 @@ target.getClass().getInterfaces(), this);
 ```java
 public class Singleton {
 
-private static Singleton instance;
+    private static Singleton instance;
 
-private Singleton () {}
+    private Singleton () {}
 
-public static Singleton getInstance() {
-if (instance == null) {
-instance = new Singleton();
-}
-return instance;
-}
+    public static Singleton getInstance() {
+        if (instance == null) {
+        	instance = new Singleton();
+        }
+        return instance;
+    }
 
 }
 ```
@@ -477,16 +477,16 @@ return instance;
 ```java
 public class Singleton {
 
-private static Singleton instance;
+    private static Singleton instance;
 
-private Singleton () {}
+    private Singleton () {}
 
-public static synchronized Singleton getInstance() {
-if (instance == null) {
-instance = new Singleton();
-}
-return instance;
-}
+    public static synchronized Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
 
 }
 ```
@@ -498,13 +498,13 @@ return instance;
 ```java
 public class Singleton {
 
-private static Singleton instance = new Singleton();
+    private static Singleton instance = new Singleton();
 
-private Singleton () {}
+    private Singleton () {}
 
-public static Singleton getInstance() {
-return instance;
-}
+    public static Singleton getInstance() {
+    	return instance;
+    }
 
 }
 ```
@@ -516,20 +516,20 @@ return instance;
 ```java
 public class Singleton {
 
-private volatile static Singleton singleton;
+    private volatile static Singleton singleton;
 
-private Singleton (){}
+    private Singleton (){}
 
-public static Singleton getSingleton() {
-if (singleton == null) {
-synchronized (Singleton.class) {
-if (singleton == null) {
-singleton = new Singleton();
-}
-}
-}
-return singleton;
-}
+    public static Singleton getSingleton() {
+        if (singleton == null) {
+            synchronized (Singleton.class) {
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
 
 }
 ```
@@ -541,15 +541,15 @@ return singleton;
 ```java
 public class Singleton {
 
-private static class SingletonHolder {
-private static final Singleton INSTANCE = new Singleton();
-}
+    private static class SingletonHolder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
 
-private Singleton () {}
+    private Singleton () {}
 
-public static final Singleton getInstance() {
-return SingletonHolder.INSTANCE;
-}
+    public static final Singleton getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
 
 } 
 ```
@@ -561,10 +561,10 @@ return SingletonHolder.INSTANCE;
 ```java
 public enum Singleton {
 
-INSTANCE;
+    INSTANCE;
 
-public void whateverMethod() {
-}
+    public void whateverMethod() {
+    }
 
 }
 ```
@@ -793,27 +793,27 @@ equals 本质上就是 ==，只不过 String 和 Integer 等重写了 equals 方
 
 ```java
 public class Cat {
-private  String name;
+    private  String name;
 
-public Cat(String name){
-this.name = name;
-}
+    public Cat(String name){
+        this.name = name;
+    }
 
-public String getName() {
-return name;
-}
+    public String getName() {
+        return name;
+    }
 
-public void setName(String name) {
-this.name = name;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-public static void main(String[] args) {
-Cat c1 = new Cat("cat1");//c1是Cat的实例化对象,c2同理
-Cat c2 = new Cat("cat2");
-String s1 = new String("隔壁老王");
-String s2 = new String("隔壁老王");
-System.out.println(c1.equals(c2));	//false,equals在比较的类对象的时候比较的是引用
-System.out.println(s1.equals(s2));	//true,而在比较string的时候,因为重写了equals方法,和基本数据类型一样,比较的是值,所以为true
+    public static void main(String[] args) {
+        Cat c1 = new Cat("cat1");//c1是Cat的实例化对象,c2同理
+        Cat c2 = new Cat("cat2");
+        String s1 = new String("隔壁老王");
+        String s2 = new String("隔壁老王");
+        System.out.println(c1.equals(c2));	//false,equals在比较的类对象的时候比较的是引用
+        System.out.println(s1.equals(s2));	//true,而在比较string的时候,因为重写了equals方法,和基本数据类型一样,比较的是值,所以为true
 }
 ```
 
@@ -979,8 +979,8 @@ public static void count(){
     int count = 0;
     for(int i = 0;i<str.length;i++){
         if("(某字符)".equals(str[i])){
-        count++;
-    }
+            count++;
+        }
     }
     System.out.println(count);
 }
